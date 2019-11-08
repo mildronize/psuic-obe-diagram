@@ -1,0 +1,9 @@
+name,parent,position
+Top Level,null,
+Level 2: A,Top Level,right
+Level 2: B,Top Level,left
+Son of A,Level 2: A,
+Daughter of A,Level 2: A,
+Daughter of A,Level 2: A,
+Daughter of B,Level 2: B,
+Daughter of B,Level 2: B,
