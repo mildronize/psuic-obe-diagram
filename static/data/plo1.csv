@@ -1,0 +1,7 @@
+name,title,parent,position
+PLO1,PLO1,null,
+Modules,Modules,PLO1,left
+Courses,Courses,PLO1,right
+CMDT-M09,Digital Cybersecurity and Digital Laws,Modules,
+142-129,Organic Thinking,Courses,
+142-234,Life is Beautiful,Courses,

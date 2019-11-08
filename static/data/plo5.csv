@@ -1,0 +1,19 @@
+name,title,parent,position
+PLO5,PLO5,null,
+Modules,Modules,PLO5,left
+Courses,Courses,PLO5,right
+CMDT-M01,Creative Problem Solving and Critical Thinking,Modules,
+CMDT-M02,Digital Creative Media Designers,Modules,
+CMDT-M02,Digital Creative Media Designers,Modules,
+CMDT-M03,Media producers and Production,Modules,
+CMDT-M04,Cross-platform Developers,Modules,
+CMDT-M05,New Media and Digital Trends,Modules,
+CMDT-M05,New Media and Digital Trends,Modules,
+CMDT-M06,Transforming Digital Learning and Governmental Institutions,Modules,
+CMDT-M07,Digital Data Intelligence Analyst and Management,Modules,
+CMDT-M08,"Digital Marketing, Digital Entrepreneur and Self Promotion Development",Modules,
+CMDT-M08,"Digital Marketing, Digital Entrepreneur and Self Promotion Development",Modules,
+CMDT-M09,Digital Cybersecurity and Digital Laws,Modules,
+142-121,The Future Earth,Courses,
+142-124,Creative Problem Solving,Courses,
+142-129,Organic Thinking,Courses,

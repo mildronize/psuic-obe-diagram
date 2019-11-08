@@ -4,7 +4,11 @@
   stroke-width: 3px;
 }
 
-.node text { font: 12px sans-serif; }
+.node text { 
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-size: 12; 
+  font-weight: bold;
+}
 
 .node--internal text {
   text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;

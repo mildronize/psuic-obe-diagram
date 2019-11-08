@@ -1,14 +1,52 @@
 import "./styles.scss";
 import URLSearchParams from '@ungap/url-search-params';
 
+// import * as textwrap from 'd3-textwrap';
+
 
 const urlParams = new URLSearchParams(window.location.search)
-const PLO = urlParams.has('plo')?`plo${urlParams.get('plo')}`:"dummy";
+const PLO = urlParams.has('plo') ? `plo${urlParams.get('plo')}` : "dummy";
 
 // set the dimensions and margins of the diagram
-var margin = { top: 20, right: 90, bottom: 30, left: 90 },
-    width = 1200 - margin.left - margin.right,
-    height = 800 - margin.top - margin.bottom;
+var margin = { top: 20, right: 90, bottom: 30, left: 700 },
+    width = 1900 - margin.left - margin.right,
+    height = 1000 - margin.top - margin.bottom;
+
+
+
+// https://stackoverflow.com/questions/24784302/wrapping-text-in-d3
+function wrap(text, width) {
+    text.each(function () {
+        var text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            x = text.attr("x"),
+            y = text.attr("y"),
+            dy = 0, //parseFloat(text.attr("dy")),
+            tspan = text.text(null)
+                        .append("tspan")
+                        .attr("x", x)
+                        .attr("y", y)
+                        .attr("dy", dy + "em");
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan")
+                            .attr("x", x)
+                            .attr("y", y)
+                            .attr("dy", ++lineNumber * lineHeight + dy + "em")
+                            .text(word);
+            }
+        }
+    });
+}
 
 
 // load the external data
@@ -30,6 +68,7 @@ d3.csv(`data/${PLO}.csv`, function (error, flatData) {
 
     // assign the name to each node
     treeData.each(function (d) {
+        console.log(d.id);
         d.name = d.id;
     });
 
@@ -46,7 +85,7 @@ d3.csv(`data/${PLO}.csv`, function (error, flatData) {
     let node_left = hierarchyByPosition(treeData, "left");
     let node_right = hierarchyByPosition(treeData, "right");
 
-    const drawTree = (node, position) => {
+    const drawTree = (node, position, isHideRoot) => {
 
         var SWITCH_CONST;
         switch (position) {
@@ -111,15 +150,31 @@ d3.csv(`data/${PLO}.csv`, function (error, flatData) {
         // adds the text to the node
         node.append("text")
             .attr("dy", ".35em")
-            .attr("x", function (d) { return d.children ? -13 : 13; })
+            .attr("x", function (d) { 
+                const margin = 20;
+                if( isHideRoot & d.depth == 0)return margin;
+                return SWITCH_CONST * margin;
+             })
             .style("text-anchor", function (d) {
-                return d.children ? "end" : "start";
+                if( isHideRoot & d.depth == 0)return "start";
+                if(position == "left")
+                    return "end";
+                else {
+                    return "start";
+                }
+                // else return d.children ? "end" : "start";
             })
-            .text(function (d) { return d.data.name; });
+            .text((d) => { 
+                const title = d.data.data?d.data.data.title:"";
+                // console.log(d.data.data?d.data.data.title:"");
+                if(title == d.data.name) return d.data.name; 
+                if(title == "") return d.data.name; 
+                else return d.data.name + ": " + title; 
+            })
+            .call(wrap, 400);
 
     };
 
-    drawTree(node_left, "left");
-    drawTree(node_right, "right");
-
+    drawTree(node_left, "left", true);
+    drawTree(node_right, "right", false);
 });

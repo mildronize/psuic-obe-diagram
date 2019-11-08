@@ -1,0 +1,10 @@
+name,title,parent,position
+PLO2,PLO2,null,
+Modules,Modules,PLO2,left
+Courses,Courses,PLO2,right
+CMDT-M01,Creative Problem Solving and Critical Thinking,Modules,
+CMDT-M01,Creative Problem Solving and Critical Thinking,Modules,
+142-121,The Future Earth,Courses,
+142-124,Creative Problem Solving,Courses,
+142-129,Organic Thinking,Courses,
+142-234,Life is Beautiful,Courses,
