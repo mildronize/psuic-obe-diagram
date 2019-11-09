@@ -1,63 +1,35 @@
 <!DOCTYPE html>
-<meta charset='utf-8'>
-<head>
-    <title>Simple Radial Tree (d3 v4; CSV; 63 Lines)</title>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-</head>
-
+<meta charset="utf-8">
 <style>
-    circle {
-        stroke: #05668D;
-        fill: white;
-        opacity: 0.6;
-        stroke-width: 2px;
-    }
 
-    path {
-        fill: none;
-        stroke: #05668D;
-        opacity: 0.6;
-        stroke-width: 2px;
-    }
+.node circle {
+  fill: #999;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.node--internal circle {
+  fill: #555;
+}
+
+.node--internal text {
+  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+}
+
+.link {
+  fill: none;
+  stroke: #555;
+  stroke-opacity: 0.4;
+  stroke-width: 1.5px;
+}
+
 </style>
-
-<svg>
-    <g></g>
-</svg>
-
+<svg width="1600" height="1660"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="radial-tree.js"></script>
 <script>
-    var vWidth = 300;
-    var vHeight = 200;
 
-    // Prepare our physical space
-    var g = d3.select('svg').attr('width', vWidth).attr('height', vHeight)
-        .select('g').attr('transform', 'translate(' + vWidth/2 + ',' + vHeight/2 + ')');
 
-    // Get the data from our CSV file
-    d3.csv('data/dummy.csv', function(error, vCsvData) {
-        if (error) throw error;
-
-        vData = d3.stratify()(vCsvData);
-        drawViz(vData);
-    });
-
-    function drawViz(vData) {
-        // Declare d3 layout
-        var vLayout = d3.cluster().size([2 * Math.PI, Math.min(vWidth, vHeight)/2 - 10]); // margin!
-
-        // Layout + Data
-        var vRoot = d3.hierarchy(vData);
-        var vNodes = vRoot.descendants();
-        var vLinks = vLayout(vRoot).links();
-
-        // Draw on screen
-        g.selectAll('path').data(vLinks).enter().append('path')
-            .attr('d', d3.linkRadial()
-                .angle(function (d) { return d.x; })
-                .radius(function (d) { return d.y; }));
-
-        g.selectAll('circle').data(vNodes).enter().append('circle')
-            .attr('r', 10)
-            .attr("transform", function (d) { return "translate(" + d3.pointRadial(d.x, d.y) + ")"; });
-    }
 </script>

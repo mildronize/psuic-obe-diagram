@@ -8,8 +8,6 @@ import SvgSaver from 'svgsaver';
 
 const urlParams = new URLSearchParams(window.location.search)
 const PLO = urlParams.has('plo') ? `plo${urlParams.get('plo')}` : "all";
-const TREE_LEFT_MARGIN_TOP = urlParams.has('left_top') ? urlParams.get('left_top') : 0;
-const TREE_RIGHT_MARGIN_TOP = urlParams.has('right_top') ? urlParams.get('right_top') : 0;
 
 const is_wrap = false;
 //  for indiviual 
@@ -100,10 +98,9 @@ d3.csv(`data/${PLO}.csv`, function (error, flatData) {
     const drawTree = (node, position, isHideRoot) => {
 
         var SWITCH_CONST;
-        var extra_margin;
         switch (position) {
-            case "left": SWITCH_CONST = -1; extra_margin=TREE_LEFT_MARGIN_TOP; break;
-            case "right": SWITCH_CONST = 1; extra_margin=TREE_RIGHT_MARGIN_TOP;break;
+            case "left": SWITCH_CONST = -1; break;
+            case "right": SWITCH_CONST = 1; break;
             default: throw error();
         }
 
@@ -118,8 +115,8 @@ d3.csv(`data/${PLO}.csv`, function (error, flatData) {
             .attr("height", calculated_height),
             g = svg.append("g")
                 .attr("transform",
-                    "translate(" + margin.left +"," + margin.top + ")")
-                .attr("transform", "translate(" + calculated_width / 2 + ", " + extra_margin + ")");
+                    "translate(" + margin.left + "," + margin.top + ")")
+                .attr("transform", "translate(" + calculated_width / 2 + ",0)");
 
         // declares a tree layout and assigns the size
         // Set the size
@@ -127,7 +124,7 @@ d3.csv(`data/${PLO}.csv`, function (error, flatData) {
         // so the height is used as the width
         // and the width as the height
         var treemap = d3.tree()
-            .size([height, SWITCH_CONST * (width - 150) / 2] );
+            .size([height, SWITCH_CONST * (width - 150) / 2]);
 
         // maps the node data to the tree layout
         var nodes = treemap(node);
@@ -199,8 +196,3 @@ d3.csv(`data/${PLO}.csv`, function (error, flatData) {
 
 });
 
-function project(x, y) {
-    var angle = (x - 90) / 180 * Math.PI, radius = y;
-    return [radius * Math.cos(angle), radius * Math.sin(angle)];
-  }
-  
