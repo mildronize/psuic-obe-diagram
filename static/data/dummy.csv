@@ -1,4 +1,4 @@
-name,parent,position
+name,parent,position,size
 Top Level,null,
 Level 2: A,Top Level,right
 Level 2: B,Top Level,left

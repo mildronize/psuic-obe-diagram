@@ -1,21 +1,30 @@
 import "./styles.scss";
 import URLSearchParams from '@ungap/url-search-params';
+import { saveAs } from 'file-saver';
+import SvgSaver from 'svgsaver';
 
 // import * as textwrap from 'd3-textwrap';
 
 
 const urlParams = new URLSearchParams(window.location.search)
-const PLO = urlParams.has('plo') ? `plo${urlParams.get('plo')}` : "dummy";
+const PLO = urlParams.has('plo') ? `plo${urlParams.get('plo')}` : "all";
+
+const is_wrap = false;
+//  for indiviual 
 
 // set the dimensions and margins of the diagram
-var margin = { top: 20, right: 90, bottom: 30, left: 700 },
-    width = 1900 - margin.left - margin.right,
-    height = 1000 - margin.top - margin.bottom;
+// var margin = { top: 20, right: 90, bottom: 30, left: 700 },
+//     width = 1900 - margin.left - margin.right,
+//     height = 1000 - margin.top - margin.bottom;
 
+var margin = { top: 20, right: 0, bottom: 30, left: 1408 },
+    width = 3000 - margin.left - margin.right,
+    height = 3400 - margin.top - margin.bottom;
 
 
 // https://stackoverflow.com/questions/24784302/wrapping-text-in-d3
 function wrap(text, width) {
+    if (is_wrap){
     text.each(function () {
         var text = d3.select(this),
             words = text.text().split(/\s+/).reverse(),
@@ -46,6 +55,7 @@ function wrap(text, width) {
             }
         }
     });
+    }    
 }
 
 
@@ -145,10 +155,11 @@ d3.csv(`data/${PLO}.csv`, function (error, flatData) {
 
         // adds the circle to the node
         node.append("circle")
-            .attr("r", 10);
+            .attr("r", 8);
 
         // adds the text to the node
         node.append("text")
+            .attr("font-size", "12")
             .attr("dy", ".35em")
             .attr("x", function (d) { 
                 const margin = 20;
@@ -177,4 +188,11 @@ d3.csv(`data/${PLO}.csv`, function (error, flatData) {
 
     drawTree(node_left, "left", true);
     drawTree(node_right, "right", false);
+
+    var svgsaver = new SvgSaver();
+    var html = d3.select("svg").on('click',function() {
+        svgsaver.asSvg(this, "epicyclicGearing.svg");
+      });
+
 });
+
